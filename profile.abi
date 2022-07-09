@@ -1,0 +1,344 @@
+{
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT ",
+    "version": "eosio::abi/1.2",
+    "types": [],
+    "structs": [
+        {
+            "name": "achievements",
+            "base": "",
+            "fields": [
+                {
+                    "name": "account",
+                    "type": "name"
+                },
+                {
+                    "name": "badge",
+                    "type": "name"
+                },
+                {
+                    "name": "count",
+                    "type": "uint32"
+                }
+            ]
+        },
+        {
+            "name": "badge_count",
+            "base": "",
+            "fields": [
+                {
+                    "name": "badge",
+                    "type": "name"
+                },
+                {
+                    "name": "count",
+                    "type": "uint16"
+                }
+            ]
+        },
+        {
+            "name": "claimgotcha",
+            "base": "",
+            "fields": [
+                {
+                    "name": "org",
+                    "type": "name"
+                },
+                {
+                    "name": "account",
+                    "type": "name"
+                }
+            ]
+        },
+        {
+            "name": "creategotcha",
+            "base": "",
+            "fields": [
+                {
+                    "name": "org",
+                    "type": "name"
+                },
+                {
+                    "name": "badge",
+                    "type": "name"
+                },
+                {
+                    "name": "starttime",
+                    "type": "time_point"
+                },
+                {
+                    "name": "cycle_length",
+                    "type": "uint64"
+                },
+                {
+                    "name": "max_cap",
+                    "type": "uint8"
+                },
+                {
+                    "name": "ipfsimage",
+                    "type": "string"
+                },
+                {
+                    "name": "details",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "createsimple",
+            "base": "",
+            "fields": [
+                {
+                    "name": "org",
+                    "type": "name"
+                },
+                {
+                    "name": "badge",
+                    "type": "name"
+                },
+                {
+                    "name": "parentbadge",
+                    "type": "name[]"
+                },
+                {
+                    "name": "ipfsimage",
+                    "type": "string"
+                },
+                {
+                    "name": "details",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "givegotcha",
+            "base": "",
+            "fields": [
+                {
+                    "name": "org",
+                    "type": "name"
+                },
+                {
+                    "name": "from",
+                    "type": "name"
+                },
+                {
+                    "name": "to",
+                    "type": "name"
+                },
+                {
+                    "name": "amount",
+                    "type": "uint8"
+                },
+                {
+                    "name": "memo",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "givesimple",
+            "base": "",
+            "fields": [
+                {
+                    "name": "org",
+                    "type": "name"
+                },
+                {
+                    "name": "to",
+                    "type": "name"
+                },
+                {
+                    "name": "badge",
+                    "type": "name"
+                },
+                {
+                    "name": "memo",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "gotchabadge",
+            "base": "",
+            "fields": [
+                {
+                    "name": "badge",
+                    "type": "name"
+                },
+                {
+                    "name": "starttime",
+                    "type": "time_point"
+                },
+                {
+                    "name": "cycle_length",
+                    "type": "uint64"
+                },
+                {
+                    "name": "max_cap",
+                    "type": "uint8"
+                },
+                {
+                    "name": "ipfsimage",
+                    "type": "string"
+                },
+                {
+                    "name": "details",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "gotchaclaim",
+            "base": "",
+            "fields": [
+                {
+                    "name": "account",
+                    "type": "name"
+                },
+                {
+                    "name": "badge",
+                    "type": "name"
+                },
+                {
+                    "name": "balance",
+                    "type": "uint8"
+                },
+                {
+                    "name": "last_claimed_time",
+                    "type": "time_point"
+                }
+            ]
+        },
+        {
+            "name": "rollup",
+            "base": "",
+            "fields": [
+                {
+                    "name": "org",
+                    "type": "name"
+                },
+                {
+                    "name": "account",
+                    "type": "name"
+                },
+                {
+                    "name": "badge",
+                    "type": "name"
+                },
+                {
+                    "name": "existing_badges",
+                    "type": "badge_count[]"
+                }
+            ]
+        },
+        {
+            "name": "rollupbadge",
+            "base": "",
+            "fields": [
+                {
+                    "name": "badge",
+                    "type": "name"
+                },
+                {
+                    "name": "rollup_criteria",
+                    "type": "badge_count[]"
+                }
+            ]
+        },
+        {
+            "name": "simplebadge",
+            "base": "",
+            "fields": [
+                {
+                    "name": "badge",
+                    "type": "name"
+                },
+                {
+                    "name": "parentbadge",
+                    "type": "name[]"
+                },
+                {
+                    "name": "ipfsimage",
+                    "type": "string"
+                },
+                {
+                    "name": "details",
+                    "type": "string"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "name": "claimgotcha",
+            "type": "claimgotcha",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "creategotcha",
+            "type": "creategotcha",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "createsimple",
+            "type": "createsimple",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "givegotcha",
+            "type": "givegotcha",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "givesimple",
+            "type": "givesimple",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "rollup",
+            "type": "rollup",
+            "ricardian_contract": ""
+        }
+    ],
+    "tables": [
+        {
+            "name": "achievements",
+            "type": "achievements",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "gotchabadge",
+            "type": "gotchabadge",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "gotchaclaim",
+            "type": "gotchaclaim",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "rollupbadge",
+            "type": "rollupbadge",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "simplebadge",
+            "type": "simplebadge",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        }
+    ],
+    "kv_tables": {},
+    "ricardian_clauses": [],
+    "variants": [],
+    "action_results": []
+}
