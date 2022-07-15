@@ -40,24 +40,6 @@
             ]
         },
         {
-            "name": "claimgotcha",
-            "base": "",
-            "fields": [
-                {
-                    "name": "org",
-                    "type": "name"
-                },
-                {
-                    "name": "badge",
-                    "type": "name"
-                },
-                {
-                    "name": "account",
-                    "type": "name"
-                }
-            ]
-        },
-        {
             "name": "creategotcha",
             "base": "",
             "fields": [
@@ -208,7 +190,7 @@
             ]
         },
         {
-            "name": "gotchaclaim",
+            "name": "gotchastats",
             "base": "",
             "fields": [
                 {
@@ -294,11 +276,6 @@
     ],
     "actions": [
         {
-            "name": "claimgotcha",
-            "type": "claimgotcha",
-            "ricardian_contract": ""
-        },
-        {
             "name": "creategotcha",
             "type": "creategotcha",
             "ricardian_contract": ""
@@ -340,8 +317,8 @@
             "key_types": []
         },
         {
-            "name": "gotchaclaim",
-            "type": "gotchaclaim",
+            "name": "gotchastats",
+            "type": "gotchastats",
             "index_type": "i64",
             "key_names": [],
             "key_types": []

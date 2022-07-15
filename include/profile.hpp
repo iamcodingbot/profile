@@ -56,7 +56,7 @@ CONTRACT profile : public contract {
   * @return no return value.
   */
 
-  ACTION claimgotcha (name org, name badge, name account);
+  //ACTION claimgotcha (name org, name badge, name account);
 
 
   /*
@@ -122,7 +122,7 @@ CONTRACT profile : public contract {
     typedef multi_index<name("gotchabadge"), gotchabadge> gotchabadge_table;
 
     // scoped by org
-    TABLE gotchaclaim {
+    TABLE gotchastats {
       uint64_t id;
       name account;
       name badge;
@@ -133,9 +133,9 @@ CONTRACT profile : public contract {
         return ((uint128_t) account.value) << 64 | badge.value;
       }
     };
-    typedef multi_index<name("gotchaclaim"), gotchaclaim,
-    indexed_by<name("accountbadge"), const_mem_fun<gotchaclaim, uint128_t, &gotchaclaim::acc_badge_key>>
-    > gotchaclaim_table;
+    typedef multi_index<name("gotchastats"), gotchastats,
+    indexed_by<name("accountbadge"), const_mem_fun<gotchastats, uint128_t, &gotchastats::acc_badge_key>>
+    > gotchastats_table;
 
 
 
