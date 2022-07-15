@@ -1,4 +1,6 @@
 #include <eosio/eosio.hpp>
+#include <eosio/system.hpp>
+#include <eosio/time.hpp>
 
 using namespace std;
 using namespace eosio;
@@ -43,7 +45,7 @@ CONTRACT profile : public contract {
   * @param details is placeholder for any additional detail
   * @return no return value.
   */
-  ACTION creategotcha (name org, name badge, time_point starttime, uint64_t cycle_length, uint8_t max_cap, string ipfsimage, string details);
+  ACTION creategotcha (name org, name badge, time_point_sec starttime, uint64_t cycle_length, uint8_t max_cap, string ipfsimage, string details);
 
   /*
   * Claim gotcha badges for current cycle.
@@ -54,7 +56,7 @@ CONTRACT profile : public contract {
   * @return no return value.
   */
 
-  ACTION claimgotcha (name org, name account);
+  ACTION claimgotcha (name org, name badge, name account);
 
 
   /*
@@ -68,7 +70,7 @@ CONTRACT profile : public contract {
   * @param memo .
   * @return no return value.
   */
-  ACTION givegotcha (name org, name from, name to, uint8_t amount, string memo );
+  ACTION givegotcha (name org, name badge, name from, name to, uint8_t amount, string memo );
 
   /*
   * Give simple badge to a member.
@@ -108,8 +110,10 @@ CONTRACT profile : public contract {
     // scoped by org
     TABLE gotchabadge {
       name badge;
-      time_point starttime;
-      uint64_t cycle_length;
+      time_point_sec starttime; //0000
+      uint64_t cycle_length; // 24 hrs
+      time_point_sec last_known_cycle_start;
+      time_point_sec last_known_cycle_end;
       uint8_t max_cap;
       string ipfsimage;
       string details;
@@ -119,13 +123,19 @@ CONTRACT profile : public contract {
 
     // scoped by org
     TABLE gotchaclaim {
+      uint64_t id;
       name account;
       name badge;
       uint8_t balance;
       time_point last_claimed_time;
-      auto primary_key() const {return account.value; }
+      auto primary_key() const {return id; }
+      uint128_t acc_badge_key() const {
+        return ((uint128_t) account.value) << 64 | badge.value;
+      }
     };
-    typedef multi_index<name("gotchaclaim"), gotchaclaim> gotchaclaim_table;
+    typedef multi_index<name("gotchaclaim"), gotchaclaim,
+    indexed_by<name("accountbadge"), const_mem_fun<gotchaclaim, uint128_t, &gotchaclaim::acc_badge_key>>
+    > gotchaclaim_table;
 
 
 
@@ -140,12 +150,36 @@ CONTRACT profile : public contract {
 
     // scoped by org
     TABLE achievements {
+      uint64_t id;
       name account;
       name badge;
       uint32_t count;
-      auto primary_key() const {return badge.value; }
+      auto primary_key() const {return id; }
+      uint128_t acc_badge_key() const {
+        return ((uint128_t) account.value) << 64 | badge.value;
+      }
     };
-    typedef multi_index<name("achievements"), achievements> achievements_table;
+    typedef multi_index<name("achievements"), achievements,
+    indexed_by<name("accountbadge"), const_mem_fun<achievements, uint128_t, &achievements::acc_badge_key>>
+    > achievements_table;
 
+    void addachievement(name org, name badge, name account, uint8_t count) {
+      achievements_table _achievements( _self, org.value );
+      auto account_badge_index = _achievements.get_index<name("accountbadge")>();
+      uint128_t account_badge_key = ((uint128_t) account.value) << 64 | badge.value;
+      auto account_badge_iterator = account_badge_index.find (account_badge_key);
 
+      if(account_badge_iterator == account_badge_index.end()) {
+        _achievements.emplace(org, [&](auto& row){
+          row.id = _achievements.available_primary_key();
+          row.account = account;
+          row.badge = badge;
+          row.count = count;
+        });
+      } else {
+        account_badge_index.modify(account_badge_iterator, org, [&](auto& row){
+          row.count = row.count + count;
+        });
+      }
+    }
 };

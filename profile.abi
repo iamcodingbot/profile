@@ -8,6 +8,10 @@
             "base": "",
             "fields": [
                 {
+                    "name": "id",
+                    "type": "uint64"
+                },
+                {
                     "name": "account",
                     "type": "name"
                 },
@@ -44,6 +48,10 @@
                     "type": "name"
                 },
                 {
+                    "name": "badge",
+                    "type": "name"
+                },
+                {
                     "name": "account",
                     "type": "name"
                 }
@@ -63,7 +71,7 @@
                 },
                 {
                     "name": "starttime",
-                    "type": "time_point"
+                    "type": "time_point_sec"
                 },
                 {
                     "name": "cycle_length",
@@ -118,6 +126,10 @@
                     "type": "name"
                 },
                 {
+                    "name": "badge",
+                    "type": "name"
+                },
+                {
                     "name": "from",
                     "type": "name"
                 },
@@ -167,11 +179,19 @@
                 },
                 {
                     "name": "starttime",
-                    "type": "time_point"
+                    "type": "time_point_sec"
                 },
                 {
                     "name": "cycle_length",
                     "type": "uint64"
+                },
+                {
+                    "name": "last_known_cycle_start",
+                    "type": "time_point_sec"
+                },
+                {
+                    "name": "last_known_cycle_end",
+                    "type": "time_point_sec"
                 },
                 {
                     "name": "max_cap",
@@ -191,6 +211,10 @@
             "name": "gotchaclaim",
             "base": "",
             "fields": [
+                {
+                    "name": "id",
+                    "type": "uint64"
+                },
                 {
                     "name": "account",
                     "type": "name"
