@@ -13,19 +13,22 @@
       auto parentbadge_itr = _simplebadge.require_find(parentbadge[i].value, "parent badge not found");
     }
     // todo check cycle
+    // todo add in all badges
     _simplebadge.emplace(org, [&](auto& row) {
       row.badge = badge;
       row.parentbadge = parentbadge;
       row.ipfsimage = ipfsimage;
       row.details = details;
     });
+    addbadge(org, badge, name("simple"));
   }
 
   ACTION profile::creategotcha (name org, name badge, time_point_sec starttime, uint64_t cycle_length, uint8_t max_cap, string ipfsimage, string details) {
     require_auth(org);
 
     gotchabadge_table _gotchabadge (_self, org.value);
-
+    
+    // todo add in all badges
     auto badge_itr = _gotchabadge.find(badge.value);
     check(badge_itr == _gotchabadge.end(), "badge already exists");
 
@@ -39,9 +42,24 @@
       row.ipfsimage = ipfsimage;
       row.details = details;
     });
+    addbadge(org, badge, name("gotcha"));
   }
 
+  ACTION profile::createrollup (name org, name badge, vector<badge_count> rollup_criteria, string ipfsimage, string details)  {
+    require_auth(org);
 
+    rollupbadge_table _rollupbadge (_self, org.value);
+    auto badge_itr = _rollupbadge.find (badge.value);
+    check(badge_itr == _rollupbadge.end(), "rollup badge already exists");
+    _rollupbadge.emplace(org, [&](auto& row) { 
+      row.badge = badge;
+      row.rollup_criteria = rollup_criteria;
+      row.ipfsimage = ipfsimage;
+      row.details = details;
+    });
+    addbadge(org, badge, name("rollup"));
+
+  }
   ACTION profile::givegotcha (name org, name badge, name from, name to, uint8_t amount, string memo ) {
     require_auth(org);
 
@@ -139,11 +157,34 @@
     
   }
 
-  ACTION profile::rollup (name org, name account, name badge, vector<badge_count> existing_badges) {
+  ACTION profile::takerollup (name org, name account, name badge) {
     require_auth(org);
+
+    rollupbadge_table _rollupbadge (_self, org.value);
+    auto badge_itr = _rollupbadge.require_find (badge.value, "no such rollup badge present");
+    vector<badge_count> rollup_criteria = badge_itr->rollup_criteria;
+
+    achievements_table _achievements( _self, org.value );
+    auto account_badge_index = _achievements.get_index<name("accountbadge")>();
+    uint128_t account_badge_key = ((uint128_t) account.value) << 64 | badge.value;
+    auto account_badge_iterator = account_badge_index.find (account_badge_key);
+
+    check(account_badge_iterator == account_badge_index.end(), "Already claimed");
+
+    for(auto i = 0 ; i < rollup_criteria.size() ; i++) {
+      auto idx = _achievements.get_index<name("accountbadge")>();
+      uint128_t key = ((uint128_t) account.value) << 64 | rollup_criteria[i].badge.value;
+      auto itr = idx.find (key);
+      check(itr != idx.end(), "badge not found, criteria unmet");
+      check(itr->count >= rollup_criteria[i].count, "count of badge less, criteria unmet");  
+    }
+    addachievement(org, badge, account, 1);
   }
 
-
-
+// todos 
+// improved error messages.
+// give gotcha to urself?
+// is_account.
+// achievement table structure.
 
 

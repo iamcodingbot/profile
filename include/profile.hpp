@@ -56,7 +56,7 @@ CONTRACT profile : public contract {
   * @return no return value.
   */
 
-  //ACTION claimgotcha (name org, name badge, name account);
+  ACTION createrollup (name org, name badge, vector<badge_count> rollup_criteria, string ipfsimage, string details);
 
 
   /*
@@ -84,6 +84,8 @@ CONTRACT profile : public contract {
   ACTION givesimple (name org, name to, name badge, string memo );
 
 
+
+
   /*
   * Rollup combination of existing badges to receive a new badge.
   *
@@ -93,10 +95,17 @@ CONTRACT profile : public contract {
   * @param existing_badges is condition represented by existing badge x count vector
   * @return no return value.
   */
-  ACTION rollup (name org, name account, name badge, vector<badge_count> existing_badges);
+  ACTION takerollup (name org, name account, name badge);
 
   private:
-
+    // scoped by org
+    TABLE allbadges {
+      name badge;
+      name kind;
+      auto primary_key() const {return badge.value; }
+    };
+    typedef multi_index<name("allbadges"), allbadges> allbadges_table;
+    
     // scoped by org
     TABLE simplebadge {
       name badge;
@@ -143,6 +152,8 @@ CONTRACT profile : public contract {
     TABLE rollupbadge {
       name badge;
       vector<badge_count> rollup_criteria;
+      string ipfsimage;
+      string details;
       auto primary_key() const {return badge.value; }
     };
     typedef multi_index<name("rollupbadge"), rollupbadge> rollupbadge_table;
@@ -162,6 +173,16 @@ CONTRACT profile : public contract {
     typedef multi_index<name("achievements"), achievements,
     indexed_by<name("accountbadge"), const_mem_fun<achievements, uint128_t, &achievements::acc_badge_key>>
     > achievements_table;
+
+    void addbadge(name org, name badge, name kind) {
+      allbadges_table _allbadges( _self, org.value );
+      auto itr = _allbadges.find(badge.value);
+      check(itr == _allbadges.end(), "badge name already taken");
+      _allbadges.emplace(org, [&](auto& row){
+        row.badge = badge;
+        row.kind = kind;
+      });
+    }
 
     void addachievement(name org, name badge, name account, uint8_t count) {
       achievements_table _achievements( _self, org.value );

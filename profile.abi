@@ -26,6 +26,20 @@
             ]
         },
         {
+            "name": "allbadges",
+            "base": "",
+            "fields": [
+                {
+                    "name": "badge",
+                    "type": "name"
+                },
+                {
+                    "name": "kind",
+                    "type": "name"
+                }
+            ]
+        },
+        {
             "name": "badge_count",
             "base": "",
             "fields": [
@@ -62,6 +76,32 @@
                 {
                     "name": "max_cap",
                     "type": "uint8"
+                },
+                {
+                    "name": "ipfsimage",
+                    "type": "string"
+                },
+                {
+                    "name": "details",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "createrollup",
+            "base": "",
+            "fields": [
+                {
+                    "name": "org",
+                    "type": "name"
+                },
+                {
+                    "name": "badge",
+                    "type": "name"
+                },
+                {
+                    "name": "rollup_criteria",
+                    "type": "badge_count[]"
                 },
                 {
                     "name": "ipfsimage",
@@ -216,28 +256,6 @@
             ]
         },
         {
-            "name": "rollup",
-            "base": "",
-            "fields": [
-                {
-                    "name": "org",
-                    "type": "name"
-                },
-                {
-                    "name": "account",
-                    "type": "name"
-                },
-                {
-                    "name": "badge",
-                    "type": "name"
-                },
-                {
-                    "name": "existing_badges",
-                    "type": "badge_count[]"
-                }
-            ]
-        },
-        {
             "name": "rollupbadge",
             "base": "",
             "fields": [
@@ -248,6 +266,14 @@
                 {
                     "name": "rollup_criteria",
                     "type": "badge_count[]"
+                },
+                {
+                    "name": "ipfsimage",
+                    "type": "string"
+                },
+                {
+                    "name": "details",
+                    "type": "string"
                 }
             ]
         },
@@ -272,12 +298,35 @@
                     "type": "string"
                 }
             ]
+        },
+        {
+            "name": "takerollup",
+            "base": "",
+            "fields": [
+                {
+                    "name": "org",
+                    "type": "name"
+                },
+                {
+                    "name": "account",
+                    "type": "name"
+                },
+                {
+                    "name": "badge",
+                    "type": "name"
+                }
+            ]
         }
     ],
     "actions": [
         {
             "name": "creategotcha",
             "type": "creategotcha",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "createrollup",
+            "type": "createrollup",
             "ricardian_contract": ""
         },
         {
@@ -296,8 +345,8 @@
             "ricardian_contract": ""
         },
         {
-            "name": "rollup",
-            "type": "rollup",
+            "name": "takerollup",
+            "type": "takerollup",
             "ricardian_contract": ""
         }
     ],
@@ -305,6 +354,13 @@
         {
             "name": "achievements",
             "type": "achievements",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "allbadges",
+            "type": "allbadges",
             "index_type": "i64",
             "key_names": [],
             "key_types": []
