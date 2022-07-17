@@ -12,8 +12,7 @@
     for(auto i = 0; i < parentbadge.size(); i++) { 
       auto parentbadge_itr = _simplebadge.require_find(parentbadge[i].value, "parent badge not found");
     }
-    // todo check cycle
-    // todo add in all badges
+
     _simplebadge.emplace(org, [&](auto& row) {
       row.badge = badge;
       row.parentbadge = parentbadge;
@@ -183,6 +182,7 @@
 
 // todos 
 // improved error messages.
+// cycle check
 // give gotcha to urself?
 // is_account.
 // achievement table structure.
